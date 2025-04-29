@@ -3,6 +3,7 @@ import time
 import ast
 import json
 import threading
+
 def build_tasklist(task_string):
     """Extract task details (name, duration, dependencies) from command line."""
     try:
@@ -67,20 +68,21 @@ def calculate_runtime(tasks):
     total_expected_time = 0
 
     while len(completed_tasks) < len(tasks):
-        found_a_runner = False
+       runnable_tasks = []
         for task_name in tasks:
             if task_name not in completed_tasks and dependencies[task_name].issubset(completed_tasks):
-                found_a_runner = True
-                start = 0
-                if dependencies[task_name]:
-                    start = max([start_times[dep] + durations[dep] for dep in dependencies[task_name]])
-                start_times[task_name] = start
-                finish_time = start + durations[task_name]
-                total_expected_time = max(total_expected_time, finish_time)
-                completed_tasks.add(task_name)
-
-        if not found_a_runner and len(completed_tasks) < len(tasks):
+                runnable_tasks.append(task_name)
+         if not runnable_tasks and len(completed_tasks) < len(tasks):
             raise ValueError("Task scheduling error.")
+
+        for task_name in runnable_tasks:
+            start = 0
+            if dependencies[task_name]:
+                start = max([start_times[dep] + durations[dep] for dep in dependencies[task_name]])
+            start_times[task_name] = start
+            finish_time = start + durations[task_name]
+            total_expected_time = max(total_expected_time, finish_time)
+            completed_tasks.add(task_name)
 
     return total_expected_time
 
