@@ -28,7 +28,6 @@ Note: Use of multiple -t or --task options is permitted.
 
 ## a> Task validation
 
-!\
 python tasksv1.py -t "proc_a,2,[]" --validate
 
 Output expected:
@@ -37,11 +36,10 @@ Output expected:
 Expected runtime: 2 seconds.
 
 ## b> Execute multiple tasks in run mode with dependencies
-!
+
 python tasksv1.py -t "proc_a,2,[]" -t "proc_b,2,[\"proc_a\"]" --run
 
 Output expected:
-
 !
 
 Expected runtime: 4 seconds
