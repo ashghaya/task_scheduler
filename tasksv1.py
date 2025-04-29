@@ -2,7 +2,7 @@ import sys
 import time
 import ast
 import json
-
+import threading
 def build_tasklist(task_string):
     """Extract task details (name, duration, dependencies) from command line."""
     try:
