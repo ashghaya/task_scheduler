@@ -45,10 +45,17 @@ Output expected:
 !
 
 Expected runtime: 4 seconds
+
 Executing task: proc_a (duration: 2 seconds)
+
 Task completed: proc_a (actual duration: ~2.00 seconds)
+
 Executing task: proc_b (duration: 2 seconds)
+
 Task completed: proc_b (actual duration: ~2.00 seconds)
+
 total runtime in run mode: 4.01 seconds
+
 Runtime delta between actual & expected: 0.01 seconds
+
 
