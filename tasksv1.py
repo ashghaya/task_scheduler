@@ -16,17 +16,19 @@ def build_tasklist(task_string):
         raise ValueError(f"Task format is invalid: '{task_string}'. Expected 'name, duration, [dep1, dep2, ...]'. Details: {e}")
 
 def fetch_tasks(task_specs):
+    """fetch task definitions."""
     tasks = {}
     if not task_specs:
         raise ValueError("Specify -t/--task to provide task details.")
     for spec in task_specs:
         name, details = build_tasklist(spec)
         if name in tasks:
-            raise ValueError(f"Task with name '{name}' already defined.")
+            raise ValueError(f"Duplicate task name '{name}'.")
         tasks[name] = details
     return tasks
 
 def check_dependencies(all_tasks):
+    """Check for dependencies."""
     processing = set()
     processed = set()
 
@@ -48,6 +50,7 @@ def check_dependencies(all_tasks):
                 raise ValueError("Dependency located in task list.")
 
 def validate_dependencies(all_tasks):
+    """Verify dependencies match respective tasks."""
     task_names = set(all_tasks.keys())
     for name, details in all_tasks.items():
         if details['dependencies']:
@@ -56,11 +59,13 @@ def validate_dependencies(all_tasks):
                 raise ValueError(f"Dependencies '{', '.join(undefined)}' of task '{name}' are not defined.")
 
 def validate_tasks(tasks):
+    """Check errors."""
     validate_dependencies(tasks)
     check_dependencies(tasks)
     return True
 
 def calculate_runtime(tasks):
+    """Calculate expected task completion times."""
     start_times = {}
     durations = {name: data['duration'] for name, data in tasks.items()}
     dependencies = {name: set(data['dependencies']) for name, data in tasks.items()}
@@ -88,6 +93,7 @@ def calculate_runtime(tasks):
     return total_expected_time
 
 def run_task(name, details, completed, lock):
+    """Execute tasks & capture runtimes."""
     print(f"Executing task: {name} (duration: {details['duration']} seconds)")
     time.sleep(details['duration'])
     with lock:
@@ -95,6 +101,7 @@ def run_task(name, details, completed, lock):
     print(f"Task completed: {name} (actual duration: ~{details['duration']:.2f} seconds)")
 
 def enable_mthreads(tasks):
+    """Enable multithreading & perform parallel task execution."""
     start_time = time.time()
     completed = set()
     threads = []
