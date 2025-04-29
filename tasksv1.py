@@ -68,11 +68,12 @@ def calculate_runtime(tasks):
     total_expected_time = 0
 
     while len(completed_tasks) < len(tasks):
-       runnable_tasks = []
+        runnable_tasks = []
         for task_name in tasks:
             if task_name not in completed_tasks and dependencies[task_name].issubset(completed_tasks):
                 runnable_tasks.append(task_name)
-         if not runnable_tasks and len(completed_tasks) < len(tasks):
+
+        if not runnable_tasks and len(completed_tasks) < len(tasks):
             raise ValueError("Task scheduling error.")
 
         for task_name in runnable_tasks:
