@@ -4,6 +4,7 @@ import ast
 import json
 
 def build_tasklist(task_string):
+    """Extract task details (name, duration, dependencies) from command line."""
     try:
         parts = [part.strip() for part in task_string.split(',')]
         name, duration_str, dependencies_str = parts[0], parts[1], parts[2]
