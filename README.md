@@ -26,32 +26,20 @@ Note: Use of multiple -t or --task options is permitted.
 
 a> Task validation
 !
-python task_scheduler.py -t proc1,2,[] -t proc2,3,[proc1] --validate
-Output:
-Expected runtime: 5 seconds.
-
-b> Execute tasks in run mode
+python tasksv1.py -t "proc_a,2,[]" --validate
+Output expected:
 !
-python task_scheduler.py -t proc1,1,[] -t proc2,2,[] --run
-Output:
+Expected runtime: 2 seconds.
 
-Expected runtime: 3 seconds.
-Executing task: proc1 (duration: 1 seconds)
-Executing task: proc2 (duration: 2 seconds)
-Task completed: proc1 (actual duration: ~1.00 seconds)
-Task completed: proc2 (actual duration: ~2.00 seconds)
-total runtime in run mode: ~2.00 seconds
-Runtime delta between actual & expected: ~-1.00 seconds
-
-c> Execute tasks with dependencies
+b> Execute multiple tasks in run mode with dependencies
 !
-python task_scheduler.py -t proc1,3,[] -t proc2,2,[proc1] --run
-Expected Output:
+python tasksv1.py -t "proc_a,2,[]" -t "proc_b,2,[\"proc_a\"]" --run
+Output expected:
 
-Expected runtime: 5 seconds.
-Executing task: procX (duration: 3 seconds)
-Task completed: procX (actual duration: ~3.00 seconds)
-Executing task: procY (duration: 2 seconds)
-Task completed: procY (actual duration: ~2.00 seconds)
-total runtime in run mode: ~5.00 seconds
-Runtime delta between actual & expected: ~0.00 seconds
+Expected runtime: 4 seconds.
+Executing task: proc_a (duration: 2 seconds)
+Task completed: proc_a (actual duration: ~2.00 seconds)
+Executing task: proc_b (duration: 2 seconds)
+Task completed: proc_b (actual duration: ~2.00 seconds)
+total runtime in run mode: 4.01 seconds
+Runtime delta between actual & expected: 0.01 seconds
