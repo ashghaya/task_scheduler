@@ -26,10 +26,10 @@ Note: Use of multiple -t or --task options is permitted.
 
 ## Execution examples:
 
-## a> Task validation\
+## a> Task validation
 
 !\
-python tasksv1.py -t "proc_a,2,[]" --validate\
+python tasksv1.py -t "proc_a,2,[]" --validate
 
 Output expected:
 !
