@@ -24,7 +24,6 @@ Note: Use of multiple -t or --task options is permitted.
 
 -h, --help: Show this help message and exit.
 
-
 ##Execution examples:
 
 a> Task validation
@@ -38,7 +37,7 @@ b> Execute multiple tasks in run mode with dependencies
 !
 python tasksv1.py -t "proc_a,2,[]" -t "proc_b,2,[\"proc_a\"]" --run
 Output expected:
-
+!
 Expected runtime: 4 seconds.
 Executing task: proc_a (duration: 2 seconds)
 Task completed: proc_a (actual duration: ~2.00 seconds)
