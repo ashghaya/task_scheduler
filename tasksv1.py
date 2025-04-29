@@ -86,6 +86,13 @@ def calculate_runtime(tasks):
 
     return total_expected_time
 
+def run_task(name, details, completed, lock):
+    print(f"Executing task: {name} (duration: {details['duration']} seconds)")
+    time.sleep(details['duration'])
+    with lock:
+        completed.add(name)
+    print(f"Task completed: {name} (actual duration: ~{details['duration']:.2f} seconds)")
+
 def execute_tasks(tasks):
     start_time = time.time()
     completed = set()
