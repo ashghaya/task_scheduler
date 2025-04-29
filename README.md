@@ -5,16 +5,18 @@ This python program allows scheduling tasks in Validate &amp; RUNmode to check t
 
 Run the script from the command line with the following options:
 
-```bash
 python task_scheduler.py [-t TASK...] [--validate] [--run] [-h | --help]
 
 Options
 -t TASK..., --task TASK...: Specify a task. Each task specification should be in the format: name, duration, [dependency1, dependency2, ...].
 
-name: name for the task.
+name: name of the task.
+
 duration: estimated duration of the task in seconds in integer values.
 [dependency1, dependency2, ...]: A JSON list of task names to be completed prior to execution of this task. Use [] if no dependencies exist.
+
 Note: Use of multiple -t or --task options is permitted.
+
 --validate: task list verifcation for errors such as duplicate names
 
 --run: Execute defined tasks
