@@ -142,10 +142,10 @@ def main():
             elif arg == "-h" or arg == "--help":
                 print("Usage: python task_scheduler.py [-t TASK...] [--validate] [--run]")
                 print("Options:")
-                print("  -t TASK...      Task specification: name, duration, [dep1, dep2, ...]")
-                print("                  (Many -t options can be specified)")
-                print("  --validate      Verify the task list & print expected runtime.")
-                print("  --run           Execute tasks & compare runtimes.")
+                print("  -t TASK...       Task specification: name, duration, [dep1, dep2, ...]")
+                print("                   (Many -t options can be specified)")
+                print("  --validate       Verify the task list & print expected runtime.")
+                print("  --run            Execute independent tasks in parallel.")
                 sys.exit(0)
             else:
                 print(f"Error: Unknown argument '{arg}'")
@@ -154,7 +154,7 @@ def main():
 
     try:
         if not task_specs and (validate_mode or run_mode):
-            print("Error: task specification incomplete after -t/--task.")
+            print("Error: Specify -t/--task to provide task details.")
             sys.exit(1)
         elif not (validate_mode or run_mode):
             print("Error: Specify either --validate or --run.")
@@ -169,10 +169,10 @@ def main():
                 print(f"Expected runtime: {expected_runtime} seconds.")
             elif run_mode:
                 print(f"Expected runtime: {expected_runtime} seconds.")
-                actual_runtime = execute_tasks(tasks)
-                runtime_difference = actual_runtime - expected_runtime
-                print(f"total runtime in runmode: {actual_runtime:.2f} seconds")
-                print(f"Runtime delta between actual & expected: {runtime_difference:.2f} seconds")
+                actual_runtime_threaded = enable_mthreads(tasks)
+                runtime_difference_threaded = actual_runtime_threaded - expected_runtime
+                print(f"total runtime in run mode: {actual_runtime_threaded:.2f} seconds")
+                print(f"Runtime delta between actual & expected: {runtime_difference_threaded:.2f} seconds")
             else:
                 print("Please specify either --validate or --run.")
     except ValueError as e:
