@@ -93,22 +93,29 @@ def run_task(name, details, completed, lock):
         completed.add(name)
     print(f"Task completed: {name} (actual duration: ~{details['duration']:.2f} seconds)")
 
-def execute_tasks(tasks):
+def enable_mthreads(tasks):
     start_time = time.time()
     completed = set()
-    task_order = []
+    threads = []
+    lock = threading.Lock()
 
     while completed != set(tasks.keys()):
-        for name, details in tasks.items():
-            if name not in completed and set(details['dependencies']).issubset(completed):
-                print(f"Exceuting task: {name} (duration: {details['duration']} seconds)")
-                time.sleep(details['duration'])
-                completed.add(name)
-                task_order.append(name)
-                print(f"Task completed: {name} (actual duration: ~{details['duration']:.2f} seconds)")
-                break
-        else:
+        runnable_tasks = [(name, details) for name, details in tasks.items()
+                          if name not in completed and set(details['dependencies']).issubset(completed)]
+
+        if not runnable_tasks and completed != set(tasks.keys()):
             time.sleep(0.1)
+            continue
+
+        for name, details in runnable_tasks:
+            thread = threading.Thread(target=run_task, args=(name, details, completed, lock))
+            threads.append(thread)
+            thread.start()
+
+        for thread in threads:
+            thread.join()
+        threads = []
+
     actual_runtime = time.time() - start_time
     return actual_runtime
 
